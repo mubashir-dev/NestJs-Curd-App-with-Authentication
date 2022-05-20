@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 
 @Injectable()
 export class TasksService {
@@ -45,6 +46,14 @@ export class TasksService {
             id:task?.id,
             title:updateTaskDto.title,
             description:updateTaskDto.description
+        });
+    }
+    async updateTaskStatus(id,updateTaskStatusDto:UpdateTaskStatusDto)
+    {
+        const task = await this.taskRepoistory.findOne(id);
+        return this.taskRepoistory.save({
+            ...task,
+           ...updateTaskStatusDto
         });
     }
 

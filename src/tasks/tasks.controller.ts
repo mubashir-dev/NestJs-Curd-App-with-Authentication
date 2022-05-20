@@ -1,3 +1,4 @@
+import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { TasksService } from './tasks.service';
 import {
   Body,
@@ -16,6 +17,7 @@ import { pipe } from 'rxjs';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { TaskFilterOptionDto } from './dto/filter-task.dto';
+
 
 @Controller('tasks')
 export class TasksController {
@@ -53,6 +55,18 @@ export class TasksController {
       task: await this.taskService.updateTask(id, updateTask),
     };
   }
+
+  @Put('/status/:id')
+  @UsePipes(ValidationPipe)
+  @HttpCode(200)
+  async updateStatus(@Param('id') id: string, @Body() updateTaskStatusDto: UpdateTaskStatusDto) {
+    return {
+      message: 'record status has been updated',
+      task: await this.taskService.updateTaskStatus(id, updateTaskStatusDto),
+    };
+  }
+
+
 
   @Delete(':id')
   async delete(@Param('id') id: string) {
